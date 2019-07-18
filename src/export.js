@@ -21,7 +21,7 @@ const parser = new ArgumentParser({
 	description: 'Santander Exporter',
 	version: require('../package.json').version
 });
-parser.addArgument([ '-id', '--id' ], { required: true });
+parser.addArgument([ '-i', '--id' ], { required: true });
 parser.addArgument([ '-p', '--password' ], { required: true });
 parser.addArgument([ '-u', '--username' ], { required: true });
 

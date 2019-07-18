@@ -25,16 +25,11 @@ SantanderBrowser.prototype.login = function() {
 	let self = this;
 	logger.info(`Logging in for user ${self.id} ..`);
 
-	let options = DEBUG ? {
-		headless: false,
-		devtools: true,
-		executablePath: '/Users/pgomez/sources/santander-exporter/node_modules/puppeteer/.local-chromium/mac-672088/chrome-mac/Chromium.app/Contents/MacOS/Chromium',
-		userDataDir: '/Users/pgomez/Library/Application Support/Chromium/',
-		//executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-		//userDataDir: '/Users/pgomez/Library/Application Support/Google/Chrome/',
-	} : {};
 	return Promise.resolve().then(() => {
-		return puppeteer.launch(options);
+		return puppeteer.launch({
+			headless: !DEBUG,
+			devtools: DEBUG,
+		});
 	}).then(browser => {
 		self.browser = browser;
 		return self.browser.newPage();
@@ -179,7 +174,7 @@ SantanderBrowser.prototype.getTitulosValores = function() {
 			let scope = angular.element(document.querySelector('#main-view > titulos-valores titulos-valores-tenencia div.tabla-contenedor')).scope().cuenta;
 			if (scope.tenenciasError) throw 'Tenencias Error. Aborting';
 
-			return [ scope.tenencias.tenenciasPesos, scope.tenencias.tenenciasDolares ].flatMap(titulos => {
+			return [ scope.tenenciasPesos, scope.tenenciasDolares ].flatMap(titulos => {
 				return titulos.map(titulo => {
 					return {
 						tipo: titulo.codigoTipoProducto,
