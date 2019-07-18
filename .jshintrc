@@ -90,6 +90,7 @@
     "globals"       : {
         "include": true,
         "__project_dir": true,
-        "__src_dir": true
+        "__src_dir": true,
+        "angular": true
     }        // additional predefined global variables
 }

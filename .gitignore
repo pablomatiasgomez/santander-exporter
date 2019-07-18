@@ -5,6 +5,7 @@ package-lock.json
 cookies/*.json
 
 logs/
+exports/
 .DS_Store
 .idea
 .nyc_output/

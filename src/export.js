@@ -6,14 +6,24 @@ global.__src_dir = __dirname;
 global.include = file => require(__src_dir + '/' + file);
 global.Promise = require('bluebird');
 
+const ArgumentParser = require('argparse').ArgumentParser;
+
 const TerminalFont = include('utils/terminal-font');
 const Utils = include('utils/utils');
 
-const SantanderConnector = include('connector/santander-connector');
+const SantanderBrowser = include('connector/santander-browser');
 
 const ExportService = include('service/export-service');
 
 //----------------------
+
+const parser = new ArgumentParser({
+	description: 'Santander Exporter',
+	version: require('../package.json').version
+});
+parser.addArgument([ '-id', '--id' ], { required: true });
+parser.addArgument([ '-p', '--password' ], { required: true });
+parser.addArgument([ '-u', '--username' ], { required: true });
 
 const logger = include('utils/logger').newLogger('Main');
 
@@ -23,29 +33,18 @@ Array.prototype.flatMap = function(lambda) {
 	return Array.prototype.concat.apply([], this.map(lambda));
 };
 
-Number.prototype.pad = function(length, chr = "0") {
-	return this.toString().pad(length, chr);
-};
-
-String.prototype.pad = function(length, chr) {
-	let str = this;
-	while (str.length < length) {
-		str = chr + str;
-	}
-	return str;
-};
-
 //----------------------
 
-let santanderConnector;
+let santanderBrowser;
 let exportService;
 
 //----------------------
 
 function initServicesAndExecute() {
-	let id = "";
-	let password = "";
-	let username = "";
+	let args = parser.parseArgs();
+	let id = args.id;
+	let password = args.password;
+	let username = args.username;
 
 	logger.info('');
 	logger.info('|==================================================================================');
@@ -57,11 +56,14 @@ function initServicesAndExecute() {
 	logger.info('');
 
 	return Promise.resolve().then(() => {
-		santanderConnector = new SantanderConnector(id, password, username);
-		return santanderConnector.connect();
+		santanderBrowser = new SantanderBrowser(id, password, username);
+		return santanderBrowser.login();
 	}).then(() => {
-		exportService = new ExportService(santanderConnector);
-		return exportService.exportData();
+		exportService = new ExportService(santanderBrowser);
+		return exportService.exportData(id);
+	}).finally(() => {
+		logger.info(`Shutting down the browser..`);
+		return santanderBrowser.dispose();
 	});
 }
 
