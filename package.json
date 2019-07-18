@@ -1,0 +1,36 @@
+{
+  "name": "santander-exporter",
+  "description": "Script to export santander data.",
+  "version": "1.0.0",
+  "main": "src/export.js",
+  "license": "UNLICENSED",
+  "private": true,
+  "url": "https://github.com/pablomatiasgomez/santander-exporter",
+  "email": "pablomatiasgomez@gmail.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pablomatiasgomez/santander-exporter.git"
+  },
+  "author": {
+    "name": "Pablo Matias Gomez",
+    "email": "pablomatiasgomez@gmail.com",
+    "url": "http://pablomatiasgomez.com.ar"
+  },
+  "dependencies": {
+    "argparse": "^1.0.9",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "cheerio": "^1.0.0-rc.2",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
+    "tough-cookie": "^2.5.0",
+    "tough-cookie-file-store": "^1.2.0"
+  },
+  "bugs": {
+    "url": "https://github.com/pablomatiasgomez/santander-exporter/issues"
+  },
+  "homepage": "https://github.com/pablomatiasgomez/santander-exporter#readme",
+  "scripts": {
+    "start": "src/export.js"
+  }
+}
