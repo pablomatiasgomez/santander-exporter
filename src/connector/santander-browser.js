@@ -28,7 +28,7 @@ SantanderBrowser.prototype.login = function() {
 	return Promise.resolve().then(() => {
 		return puppeteer.launch({
 			headless: !DEBUG,
-			devtools: DEBUG,
+			devtools: false,
 		});
 	}).then(browser => {
 		self.browser = browser;
@@ -98,6 +98,7 @@ SantanderBrowser.prototype.getSaldos = function() {
 	}).delay(2000).then(() => {
 		// Get all cuentas
 		return self.page.$$('cuentas-card .card-cuentas_wrapper_saldos_general');
+		// TODO angular.element(document.querySelector("#main-view > cuentas-new > cuentas-intermedio > div > cuentas-intermedio-detalle")).scope().$ctrl.errorMensaje
 	}).then(cuentas => {
 		// Get saldo for each cuenta
 		return Promise.all(cuentas.map(cuenta => self.page.evaluate(element => element.textContent, cuenta)));
