@@ -16,7 +16,7 @@ ExportService.prototype.exportData = function(id) {
 
 	return self.getAllData().then(data => {
 		logger.info(`Going to save data exported: `, data);
-		Utils.createFile(self.getFilePath(id), JSON.stringify(data));
+		return Utils.createFile(self.getFilePath(id), JSON.stringify(data));
 		// TODO send to some spreadsheet.
 	}).catch(e => {
 		logger.error(`Failed to export data:`, e);
